@@ -84,11 +84,12 @@ const core = require("@actions/core");
 //   }
 // }
 
-async function scan(radar, skipList) {
+async function scan(baseDir, skipList) {
   try {
+    const radar = path.join(baseDir, 'tool', 'bin', 'g11n-radar')
     const project =  process.cwd();
-    const report = path.resolve(project, 'report.json');
-    const html_report = path.resolve(project, 'report.html');
+    const report = path.resolve(baseDir, 'report.json');
+    const html_report = path.resolve(baseDir, 'report.html');
     core.debug("project: " + project);
     const skips = skipList.split(',');
     await exec.exec(radar, ['-p', project, '-d', report, 'rule', '--skip', 'bundlegen/', ...skips]);
