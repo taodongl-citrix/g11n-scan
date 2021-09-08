@@ -3,10 +3,10 @@ name: "g11n radar"
 description: "scan globalization issues in repo"
 
 inputs:
-  slackChannel:
+  slack-channel:
     description: 'slack channel'
     required: true
-  slackToken:
+  slack-access-token:
     description: 'slack access token'
     required: true
   skip:
@@ -14,5 +14,5 @@ inputs:
     required: false
 
 runs:
-  using: "docker"
-  image: "Dockerfile"
+  using: "node12"
+  image: "dist/index.js"

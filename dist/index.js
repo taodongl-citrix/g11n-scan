@@ -3372,9 +3372,8 @@ const core = __nccwpck_require__(432);
 //   }
 // }
 
-async function scan(skipList) {
+async function scan(radar, skipList) {
   try {
-    const radar = '/opt/radar/bin/g11n-radar'
     const project =  process.cwd();
     const report = path.resolve(project, 'report.json');
     const html_report = path.resolve(project, 'report.html');
@@ -3383,9 +3382,8 @@ async function scan(skipList) {
     await exec.exec(radar, ['-p', project, '-d', report, 'rule', '--skip', 'bundlegen/', ...skips]);
     const data = await fs.promises.readFile(report);
     var json = JSON.parse(data);
-    var ok = (json.errors == 0);
     return {
-        ok: ok,
+        ok: json.errors == 0,
         reportFile: html_report
     };
   } catch (error) {
@@ -3445,8 +3443,7 @@ const post = (token, path, payload) => {
     req.on("error", (error) => {
       reject(error);
     });
-    payload.pipe(req);
-    // req.write(payload);
+    req.write(payload);
     req.end();
   });
 };
@@ -3459,7 +3456,7 @@ const uploadFile = async (token, channel, filename) => {
   form.append('filename', 'report.html');
   form.append('filetype', 'html');
   form.append('initial_comment', 'Please see the attachment');
-  const result = await post(token, path, form);
+  const result = await post(token, path, form.getBuffer());
 
   if (!result || !result.ok) {
     throw `Error! ${JSON.stringify(response)}`;
@@ -3674,14 +3671,16 @@ __nccwpck_require__.r(__webpack_exports__);
 
 
 const core = __nccwpck_require__(432);
+const path = __nccwpck_require__(622);
 
 async function run() {
   const skipList = core.getInput('skip') || '';
-  const channel = core.getInput('slackChannel') || 'ccccchhhh';
-  const accessToken = core.getInput('slackToken') || 'wwwwwxxxx';
+  const channel = core.getInput('slack-channel') || 'ccccchhhh';
+  const accessToken = core.getInput('slack-access-token') || 'wwwwwxxxx';
+  const tool = path.join(__dirname, '..', 'tool', 'bin', 'g11n-radar')
   console.log("channel is: " + channel);
-  console.log("token is: " + accessToken);
-  const resp = await (0,_radar__WEBPACK_IMPORTED_MODULE_1__.scan)(skipList);
+  console.log("tool is: " + tool);
+  const resp = await (0,_radar__WEBPACK_IMPORTED_MODULE_1__.scan)(tool, skipList);
   if (!resp.ok) {
     await (0,_slack__WEBPACK_IMPORTED_MODULE_0__.uploadFile)(accessToken, channel, resp.reportFile);
     console.log('Contact Globalization team in https://citrix.slack.com/archives/CJKDCKS4B for more information');

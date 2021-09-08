@@ -84,9 +84,8 @@ const core = require("@actions/core");
 //   }
 // }
 
-async function scan(skipList) {
+async function scan(radar, skipList) {
   try {
-    const radar = '/opt/radar/bin/g11n-radar'
     const project =  process.cwd();
     const report = path.resolve(project, 'report.json');
     const html_report = path.resolve(project, 'report.html');
@@ -95,9 +94,8 @@ async function scan(skipList) {
     await exec.exec(radar, ['-p', project, '-d', report, 'rule', '--skip', 'bundlegen/', ...skips]);
     const data = await fs.promises.readFile(report);
     var json = JSON.parse(data);
-    var ok = (json.errors == 0);
     return {
-        ok: ok,
+        ok: json.errors == 0,
         reportFile: html_report
     };
   } catch (error) {

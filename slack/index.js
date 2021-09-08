@@ -42,8 +42,7 @@ const post = (token, path, payload) => {
     req.on("error", (error) => {
       reject(error);
     });
-    payload.pipe(req);
-    // req.write(payload);
+    req.write(payload);
     req.end();
   });
 };
@@ -56,7 +55,7 @@ const uploadFile = async (token, channel, filename) => {
   form.append('filename', 'report.html');
   form.append('filetype', 'html');
   form.append('initial_comment', 'Please see the attachment');
-  const result = await post(token, path, form);
+  const result = await post(token, path, form.getBuffer());
 
   if (!result || !result.ok) {
     throw `Error! ${JSON.stringify(response)}`;
