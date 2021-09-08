@@ -24,4 +24,4 @@ async function uploadFile(token, channel, report) {
   }
 }
 
-export default { uploadFile };
+module.exports = { uploadFile };

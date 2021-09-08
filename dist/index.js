@@ -14835,6 +14835,46 @@ module.exports = { scan };
 
 /***/ }),
 
+/***/ 7830:
+/***/ ((module, __unused_webpack___webpack_exports__, __nccwpck_require__) => {
+
+"use strict";
+/* harmony import */ var _slack_web_api__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(431);
+/* harmony import */ var _slack_web_api__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_slack_web_api__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(5747);
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(fs__WEBPACK_IMPORTED_MODULE_1__);
+/* module decorator */ module = __nccwpck_require__.hmd(module);
+
+
+const core = __nccwpck_require__(2186);
+const github = __nccwpck_require__(5438);
+
+async function uploadFile(token, channel, report) {
+  const client = new _slack_web_api__WEBPACK_IMPORTED_MODULE_0__.WebClient(token, {
+    logLevel: _slack_web_api__WEBPACK_IMPORTED_MODULE_0__.LogLevel.INFO
+  });
+  const number = github.context.payload.pull_request.number;
+  const projectUrl = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/pull/${number}`
+  try {
+    const result = await client.files.upload({
+        channels: channel,
+        initial_comment: `PR: ${projectUrl} check failure, \nPlease see attachment`,
+        filetype: 'html',
+        filename: 'report.html',
+        file: (0,fs__WEBPACK_IMPORTED_MODULE_1__.createReadStream)(report)
+    });
+    console.log(result);
+  }
+  catch (error) {
+    core.setFailed(error);
+  }
+}
+
+module.exports = { uploadFile };
+
+
+/***/ }),
+
 /***/ 9975:
 /***/ ((module) => {
 
@@ -15017,8 +15057,8 @@ module.exports = require("zlib");
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
+/******/ 			id: moduleId,
+/******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
 /******/ 	
@@ -15031,11 +15071,58 @@ module.exports = require("zlib");
 /******/ 			if(threw) delete __webpack_module_cache__[moduleId];
 /******/ 		}
 /******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__nccwpck_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__nccwpck_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__nccwpck_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/harmony module decorator */
+/******/ 	(() => {
+/******/ 		__nccwpck_require__.hmd = (module) => {
+/******/ 			module = Object.create(module);
+/******/ 			if (!module.children) module.children = [];
+/******/ 			Object.defineProperty(module, 'exports', {
+/******/ 				enumerable: true,
+/******/ 				set: () => {
+/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
+/******/ 				}
+/******/ 			});
+/******/ 			return module;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -15056,64 +15143,26 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-// ESM COMPAT FLAG
 __nccwpck_require__.r(__webpack_exports__);
-
-// NAMESPACE OBJECT: ./slack/index.js
-var slack_namespaceObject = {};
-__nccwpck_require__.r(slack_namespaceObject);
-
-// EXTERNAL MODULE: ./node_modules/@slack/web-api/dist/index.js
-var dist = __nccwpck_require__(431);
-// EXTERNAL MODULE: external "fs"
-var external_fs_ = __nccwpck_require__(5747);
-;// CONCATENATED MODULE: ./slack/index.js
+/* harmony import */ var _slack__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(7830);
+/* harmony import */ var _radar__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(7186);
+/* harmony import */ var _radar__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_radar__WEBPACK_IMPORTED_MODULE_1__);
 
 
 const core = __nccwpck_require__(2186);
-const github = __nccwpck_require__(5438);
-
-async function uploadFile(token, channel, report) {
-  const client = new dist.WebClient(token, {
-    logLevel: dist.LogLevel.INFO
-  });
-  const number = github.context.payload.pull_request.number;
-  const projectUrl = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/pull/${number}`
-  try {
-    const result = await client.files.upload({
-        channels: channel,
-        initial_comment: `PR: ${projectUrl} check failure, \nPlease see attachment`,
-        filetype: 'html',
-        filename: 'report.html',
-        file: (0,external_fs_.createReadStream)(report)
-    });
-    console.log(result);
-  }
-  catch (error) {
-    core.setFailed(error);
-  }
-}
-
-/* harmony default export */ const slack = ({ uploadFile });
-// EXTERNAL MODULE: ./radar/index.js
-var radar = __nccwpck_require__(7186);
-;// CONCATENATED MODULE: ./index.js
-
-
-const index_core = __nccwpck_require__(2186);
 const path = __nccwpck_require__(5622);
 
 async function run() {
-  const skipList = index_core.getInput('skip') || '';
-  const channel = index_core.getInput('slack-channel');
-  const accessToken = index_core.getInput('slack-access-token');
+  const skipList = core.getInput('skip') || '';
+  const channel = core.getInput('slack-channel');
+  const accessToken = core.getInput('slack-access-token');
   const baseDir = path.join(__dirname, '..')
   console.log("channel is: " + channel);
-  const resp = await (0,radar.scan)(baseDir, skipList);
+  const resp = await (0,_radar__WEBPACK_IMPORTED_MODULE_1__.scan)(baseDir, skipList);
   if (!resp.ok) {
-    await (0,slack_namespaceObject.uploadFile)(accessToken, channel, resp.reportFile);
+    await (0,_slack__WEBPACK_IMPORTED_MODULE_0__.uploadFile)(accessToken, channel, resp.reportFile);
     console.log('Contact Globalization team in https://citrix.slack.com/archives/CJKDCKS4B for more information');
-    index_core.setFailed('g11n issues exist');
+    core.setFailed('g11n issues exist');
   }
 }
 
