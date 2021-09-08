@@ -3,15 +3,15 @@ name: "g11n radar"
 description: "scan globalization issues in repo"
 
 inputs:
+  slackChannel:
+    description: 'slack channel'
+    required: true
+  slackToken:
+    description: 'slack access token'
+    required: true
   skip:
     description: 'comma separated folders, like: abc/,xyz/,foo/'
     required: false
-  slack-channel:
-    description: 'slack channel'
-    required: true
-  slack-access-token:
-    description: 'slack access token'
-    required: true
 
 runs:
   using: "docker"

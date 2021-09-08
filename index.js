@@ -4,8 +4,8 @@ const core = require("@actions/core");
 
 async function run() {
   const skipList = core.getInput('skip') || '';
-  const channel = core.getInput('slack-channel') || 'ccccchhhh';
-  const accessToken = core.getInput('slack-access-token') || 'wwwwwxxxx';
+  const channel = core.getInput('slackChannel') || 'ccccchhhh';
+  const accessToken = core.getInput('slackToken') || 'wwwwwxxxx';
   console.log("channel is: " + channel);
   console.log("token is: " + accessToken);
   const resp = await scan(skipList);
