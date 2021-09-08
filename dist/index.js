@@ -3682,11 +3682,11 @@ async function run() {
   console.log("channel is: " + channel);
   console.log("token is: " + accessToken);
   const resp = await (0,_radar__WEBPACK_IMPORTED_MODULE_1__.scan)(skipList);
-  // if (!resp.ok) {
-  //   await uploadFile(accessToken, channel, resp.reportFile);
-  //   console.log('Contact Globalization team in https://citrix.slack.com/archives/CJKDCKS4B for more information');
-  //   core.setFailed('g11n issues exist');
-  // }
+  if (!resp.ok) {
+    await (0,_slack__WEBPACK_IMPORTED_MODULE_0__.uploadFile)(accessToken, channel, resp.reportFile);
+    console.log('Contact Globalization team in https://citrix.slack.com/archives/CJKDCKS4B for more information');
+    core.setFailed('g11n issues exist');
+  }
 }
 
 run();
