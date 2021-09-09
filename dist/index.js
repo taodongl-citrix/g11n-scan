@@ -21150,9 +21150,9 @@ async function raiseComment(token, comment) {
     //   issue_number: number,
     //   body: comment,
     // });
-    const result = await octokit.rest.issues.createComment({
+    const result = await octokit.rest.pulls.createReview({
       ...github.context.repo,
-      issue_number: number,
+      pull_number: number,
       body: comment,
     });
     console.log(result);
