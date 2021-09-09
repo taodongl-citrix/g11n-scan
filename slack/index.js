@@ -31,13 +31,12 @@ async function raiseComment(token, comment) {
     const number = github.context.payload.pull_request.number;
     /** @type {import('@octokit/core').Octokit} */
     const octokit = new github.getOctokit(token);
-    const {viewer} = await octokit.graphql("query { viewer { login, id } }");
-    console.log(viewer);
-    console.log('======');
-    const comments = await octokit.rest.pulls.listCommentsForReview({
+    // const {viewer} = await octokit.graphql("query { viewer { login } }");
+    // console.log(viewer);
+    // console.log('======');
+    const comments = await octokit.rest.pulls.listReviewComments({
       ...github.context.repo,
       pull_number: number,
-      review_id: viewer.id,
     });
     console.log(comments);
     if (comments.length > 0) {
