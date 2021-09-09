@@ -21144,18 +21144,17 @@ async function uploadFile(token, channel, report) {
 async function raiseComment(token, comment) {
   try {
     const number = github.context.payload.pull_request.number;
+    /** @type {import('@octokit/core').Octokit} */
     const octokit = new github.getOctokit(token);
-    // const result = await octokit.pulls.createReview({
-    //   ...github.context.repo,
-    //   issue_number: number,
-    //   body: comment,
-    // });
+    const {viewer} = await octokit.graphql("query { viewer { login } }");
     const result = await octokit.rest.pulls.createReview({
       ...github.context.repo,
       pull_number: number,
       body: comment,
       event: 'COMMENT',
     });
+    console.log(viewer);
+    console.log('======');
     console.log(result);
   } catch (error) {
     core.setFailed(error.message);
