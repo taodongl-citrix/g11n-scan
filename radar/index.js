@@ -84,6 +84,21 @@ const core = require("@actions/core");
 //   }
 // }
 
+function getComments(data) {
+  if (data.errors == 0) {
+    return '';
+  }
+  const head = "| File  | Description | Type | Line |";
+  const sep  = "| ----- | ----------- | ---- | ---- |";
+  var table = head + "\n" + sep;
+  data.issues.forEach(issue => {
+    const reason = getReason(issue.code);
+    const line = `|${issue.file}|${issue.context}|${reason}|${issue.position.startLine}|`;
+    table += "\n" + line;
+  });
+  return table;
+}
+
 async function scan(baseDir, skipList) {
   try {
     const radar = path.join(baseDir, 'tool', 'bin', 'g11n-radar')
@@ -97,10 +112,14 @@ async function scan(baseDir, skipList) {
     var json = JSON.parse(data);
     return {
         ok: json.errors == 0,
-        reportFile: html_report
+        reportFile: html_report,
+        comments: getComments(json),
     };
   } catch (error) {
     core.setFailed(error.message);
+  }
+  return {
+    ok: true,
   }
 }
 

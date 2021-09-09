@@ -12,10 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@actions/artifact": "^0.5.2",
     "@actions/core": "^1.5.0",
     "@actions/exec": "^1.1.0",
     "@actions/github": "^5.0.0",
-    "@vercel/ncc": "^0.30.0",
-    "@slack/web-api": "^6.4.0"
+    "@slack/web-api": "^6.4.0",
+    "@vercel/ncc": "^0.30.0"
   }
 }

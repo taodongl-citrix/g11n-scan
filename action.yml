@@ -3,6 +3,9 @@ name: "g11n radar"
 description: "scan globalization issues in repo"
 
 inputs:
+  github-access-token:
+    description: 'github access-token'
+    required: true
   slack-channel:
     description: 'slack channel'
     required: true
