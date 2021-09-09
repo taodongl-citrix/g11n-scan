@@ -31,7 +31,7 @@ async function raiseComment(token, comment) {
     const number = github.context.payload.pull_request.number;
     /** @type {import('@octokit/core').Octokit} */
     const octokit = new github.getOctokit(token);
-    const {viewer} = await octokit.graphql("query { viewer { login } }");
+    const {viewer} = await octokit.graphql("query { viewer { login, id } }");
     const result = await octokit.rest.pulls.createReview({
       ...github.context.repo,
       pull_number: number,
