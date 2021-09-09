@@ -21155,7 +21155,7 @@ async function raiseComment(token, comment) {
     });
     console.log(comments);
     if (comments.length > 0) {
-      const ct = comments.find(c => c.user?.login === viewer.login)
+      const ct = comments.find(c => !!c.user && c.user.login === viewer.login)
       console.log('updateComment');
       await octokit.rest.issues.updateComment({
         ...github.context.repo,
