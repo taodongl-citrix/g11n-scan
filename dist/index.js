@@ -1,4 +1,4 @@
-/******/ (() => { // webpackBootstrap
+require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 9557:
@@ -21154,13 +21154,15 @@ async function raiseComment(token, comment) {
       pull_number: number,
     });
     console.log(comments);
-    if (comments.status == 200 && comments.data.length > 0) {
+    if (comments.status === 200 && comments.data.length > 0) {
+      console.log('updateReviewComment');
       await octokit.rest.pulls.updateReviewComment({
         ...github.context.repo,
         comment_id: comments.data[0].id,
         body: comment,
       });
     } else {
+      console.log('createReviewComment');
       await octokit.rest.pulls.createReviewComment({
         ...github.context.repo,
         pull_number: number,
@@ -21459,3 +21461,4 @@ run();
 module.exports = __webpack_exports__;
 /******/ })()
 ;
+//# sourceMappingURL=index.js.map
