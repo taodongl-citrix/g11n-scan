@@ -31,26 +31,27 @@ async function raiseComment(token, comment) {
     const number = github.context.payload.pull_request.number;
     /** @type {import('@octokit/core').Octokit} */
     const octokit = new github.getOctokit(token);
-    // const {viewer} = await octokit.graphql("query { viewer { login } }");
+    const {viewer} = await octokit.graphql("query { viewer { login } }");
     // console.log(viewer);
     // console.log('======');
-    const comments = await octokit.rest.pulls.listReviewComments({
+    const {data: comments} = await octokit.rest.issues.listComments({
       ...github.context.repo,
-      pull_number: number,
+      issue_number: number,
     });
     console.log(comments);
-    if (comments.status === 200 && comments.data.length > 0) {
-      console.log('updateReviewComment');
-      await octokit.rest.pulls.updateReviewComment({
+    if (comments.length > 0) {
+      const ct = comments.find(c => c.user?.login === viewer.login)
+      console.log('updateComment');
+      await octokit.rest.issues.updateComment({
         ...github.context.repo,
-        comment_id: comments.data[0].id,
+        comment_id: ct.id,
         body: comment,
       });
     } else {
-      console.log('createReviewComment');
-      await octokit.rest.pulls.createReviewComment({
+      console.log('createComment');
+      await octokit.rest.issues.createComment({
         ...github.context.repo,
-        pull_number: number,
+        issue_number: number,
         body: comment,
       });
     }
