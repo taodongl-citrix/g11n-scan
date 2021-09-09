@@ -39,10 +39,10 @@ async function raiseComment(token, comment) {
       pull_number: number,
     });
     console.log(comments);
-    if (comments.length > 0) {
+    if (comments.status == 200 && comments.data.length > 0) {
       await octokit.rest.pulls.updateReviewComment({
         ...github.context.repo,
-        comment_id: comments[0].id,
+        comment_id: comments.data[0].id,
         body: comment,
       });
     } else {
