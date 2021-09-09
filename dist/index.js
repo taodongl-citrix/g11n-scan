@@ -21038,6 +21038,34 @@ const core = __nccwpck_require__(2186);
 //   }
 // }
 
+function getReason(id) {
+  switch (id) {
+    case 2001:
+      return 'Key Missing';
+    case 2002:
+      return 'Redundant Key';
+    case 2005:
+      return 'Extra Key';
+    case 2006:
+      return 'Missing File';
+    case 2007:
+      return 'Redundant File';
+    case 2008:
+      return 'Placeholder Mismatch';
+    case 2009:
+      return 'Format Error';
+    case 2010:
+      return 'File Encoding Error';
+    case 2011:
+      return 'Spell Error';
+    case 2015:
+      return 'Json Format Error';
+    case 2016:
+      return 'No Translation';
+  }
+  return id;
+}
+
 function getComments(data) {
   if (data.errors == 0) {
     return '';
