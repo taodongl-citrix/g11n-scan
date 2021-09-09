@@ -32,15 +32,27 @@ async function raiseComment(token, comment) {
     /** @type {import('@octokit/core').Octokit} */
     const octokit = new github.getOctokit(token);
     const {viewer} = await octokit.graphql("query { viewer { login, id } }");
-    const result = await octokit.rest.pulls.createReview({
-      ...github.context.repo,
-      pull_number: number,
-      body: comment,
-      event: 'COMMENT',
-    });
     console.log(viewer);
     console.log('======');
-    console.log(result);
+    const comments = await octokit.rest.pulls.listCommentsForReview({
+      ...github.context.repo,
+      pull_number: number,
+      review_id: viewer.id,
+    });
+    console.log(comments);
+    if (comments.length > 0) {
+      await octokit.rest.pulls.updateReviewComment({
+        ...github.context.repo,
+        comment_id: comments[0].id,
+        body: comment,
+      });
+    } else {
+      await octokit.rest.pulls.createReviewComment({
+        ...github.context.repo,
+        pull_number: number,
+        body: comment,
+      });
+    }
   } catch (error) {
     core.setFailed(error.message);
     return false;
