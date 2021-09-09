@@ -21154,6 +21154,7 @@ async function raiseComment(token, comment) {
       ...github.context.repo,
       pull_number: number,
       body: comment,
+      event: 'COMMENT',
     });
     console.log(result);
   } catch (error) {
