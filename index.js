@@ -1,4 +1,4 @@
-const {uploadFile, createComment, saveArtifacts } = require('./slack');
+const {uploadFile, raiseComment, saveArtifacts } = require('./slack');
 const {scan} = require('./radar');
 const core = require("@actions/core");
 const path = require("path");
@@ -18,7 +18,7 @@ async function run() {
     // if (!result) {
     //   return;
     // } 
-    result = await createComment(githubAccessToken, resp.comments);
+    result = await raiseComment(githubAccessToken, resp.comments);
     if (!result) {
       return;
     }

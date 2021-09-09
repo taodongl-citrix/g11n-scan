@@ -26,7 +26,7 @@ async function uploadFile(token, channel, report) {
   }
 }
 
-async function createComment(token, comment) {
+async function raiseComment(token, comment) {
   try {
     const number = github.context.payload.pull_request.number;
     const octokit = new github.getOctokit(token);
@@ -59,4 +59,4 @@ async function saveArtifacts(baseDir, reportFile) {
   return true;
 }
 
-module.exports = { uploadFile, createComment, saveArtifacts };
+module.exports = { uploadFile, raiseComment, saveArtifacts };

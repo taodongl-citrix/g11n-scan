@@ -21141,7 +21141,7 @@ async function uploadFile(token, channel, report) {
   }
 }
 
-async function createComment(token, comment) {
+async function raiseComment(token, comment) {
   try {
     const number = github.context.payload.pull_request.number;
     const octokit = new github.getOctokit(token);
@@ -21174,7 +21174,7 @@ async function saveArtifacts(baseDir, reportFile) {
   return true;
 }
 
-module.exports = { uploadFile, createComment, saveArtifacts };
+module.exports = { uploadFile, raiseComment, saveArtifacts };
 
 
 /***/ }),
@@ -21404,7 +21404,7 @@ module.exports = require("zlib");
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-const {uploadFile, createComment, saveArtifacts } = __nccwpck_require__(7830);
+const {uploadFile, raiseComment, saveArtifacts } = __nccwpck_require__(7830);
 const {scan} = __nccwpck_require__(7186);
 const core = __nccwpck_require__(2186);
 const path = __nccwpck_require__(5622);
@@ -21424,7 +21424,7 @@ async function run() {
     // if (!result) {
     //   return;
     // } 
-    result = await createComment(githubAccessToken, resp.comments);
+    result = await raiseComment(githubAccessToken, resp.comments);
     if (!result) {
       return;
     }
