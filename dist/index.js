@@ -21141,14 +21141,16 @@ async function uploadFile(token, channel, report) {
   }
 }
 
+async function removeComment(token) {
+  await raiseComment(token, undefined);
+}
+
 async function raiseComment(token, comment) {
   try {
     const number = github.context.payload.pull_request.number;
     /** @type {import('@octokit/core').Octokit} */
     const octokit = new github.getOctokit(token);
     const {viewer} = await octokit.graphql("query { viewer { login } }");
-    // console.log(viewer);
-    // console.log('======');
     const {data: comments} = await octokit.rest.issues.listComments({
       ...github.context.repo,
       issue_number: number,
@@ -21156,13 +21158,19 @@ async function raiseComment(token, comment) {
     console.log(comments);
     if (comments.length > 0) {
       const ct = comments.find(c => !!c.user && c.user.login === viewer.login)
-      console.log('updateComment');
-      await octokit.rest.issues.updateComment({
-        ...github.context.repo,
-        comment_id: ct.id,
-        body: comment,
-      });
-    } else {
+      if (!comment) {
+        await octokit.rest.issues.deleteComment({
+          ...github.context.repo,
+          comment_id: ct.id,
+        });
+      } else {
+        await octokit.rest.issues.updateComment({
+          ...github.context.repo,
+          comment_id: ct.id,
+          body: comment,
+        });
+      }
+    } else if (!!comment) {
       console.log('createComment');
       await octokit.rest.issues.createComment({
         ...github.context.repo,
@@ -21193,7 +21201,7 @@ async function saveArtifacts(baseDir, reportFile) {
   return true;
 }
 
-module.exports = { uploadFile, raiseComment, saveArtifacts };
+module.exports = { uploadFile, raiseComment, removeComment, saveArtifacts };
 
 
 /***/ }),
@@ -21423,7 +21431,7 @@ module.exports = require("zlib");
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-const {uploadFile, raiseComment, saveArtifacts } = __nccwpck_require__(7830);
+const {uploadFile, raiseComment, removeComment, saveArtifacts } = __nccwpck_require__(7830);
 const {scan} = __nccwpck_require__(7186);
 const core = __nccwpck_require__(2186);
 const path = __nccwpck_require__(5622);
@@ -21452,6 +21460,8 @@ async function run() {
       console.log('Contact Globalization team in https://citrix.slack.com/archives/CJKDCKS4B for more information');
       core.setFailed('g11n issues exist');
     }
+  } else {
+    await removeComment(githubAccessToken);
   }
 }
 

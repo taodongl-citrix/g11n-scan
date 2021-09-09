@@ -26,14 +26,16 @@ async function uploadFile(token, channel, report) {
   }
 }
 
+async function removeComment(token) {
+  await raiseComment(token, undefined);
+}
+
 async function raiseComment(token, comment) {
   try {
     const number = github.context.payload.pull_request.number;
     /** @type {import('@octokit/core').Octokit} */
     const octokit = new github.getOctokit(token);
     const {viewer} = await octokit.graphql("query { viewer { login } }");
-    // console.log(viewer);
-    // console.log('======');
     const {data: comments} = await octokit.rest.issues.listComments({
       ...github.context.repo,
       issue_number: number,
@@ -41,13 +43,19 @@ async function raiseComment(token, comment) {
     console.log(comments);
     if (comments.length > 0) {
       const ct = comments.find(c => !!c.user && c.user.login === viewer.login)
-      console.log('updateComment');
-      await octokit.rest.issues.updateComment({
-        ...github.context.repo,
-        comment_id: ct.id,
-        body: comment,
-      });
-    } else {
+      if (!comment) {
+        await octokit.rest.issues.deleteComment({
+          ...github.context.repo,
+          comment_id: ct.id,
+        });
+      } else {
+        await octokit.rest.issues.updateComment({
+          ...github.context.repo,
+          comment_id: ct.id,
+          body: comment,
+        });
+      }
+    } else if (!!comment) {
       console.log('createComment');
       await octokit.rest.issues.createComment({
         ...github.context.repo,
@@ -78,4 +86,4 @@ async function saveArtifacts(baseDir, reportFile) {
   return true;
 }
 
-module.exports = { uploadFile, raiseComment, saveArtifacts };
+module.exports = { uploadFile, raiseComment, removeComment, saveArtifacts };

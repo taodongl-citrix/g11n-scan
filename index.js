@@ -1,4 +1,4 @@
-const {uploadFile, raiseComment, saveArtifacts } = require('./slack');
+const {uploadFile, raiseComment, removeComment, saveArtifacts } = require('./slack');
 const {scan} = require('./radar');
 const core = require("@actions/core");
 const path = require("path");
@@ -27,6 +27,8 @@ async function run() {
       console.log('Contact Globalization team in https://citrix.slack.com/archives/CJKDCKS4B for more information');
       core.setFailed('g11n issues exist');
     }
+  } else {
+    await removeComment(githubAccessToken);
   }
 }
 
