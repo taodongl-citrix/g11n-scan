@@ -30,7 +30,12 @@ async function raiseComment(token, comment) {
   try {
     const number = github.context.payload.pull_request.number;
     const octokit = new github.getOctokit(token);
-    const result = await octokit.issues.createComment({
+    // const result = await octokit.pulls.createReview({
+    //   ...github.context.repo,
+    //   issue_number: number,
+    //   body: comment,
+    // });
+    const result = await octokit.rest.issues.createComment({
       ...github.context.repo,
       issue_number: number,
       body: comment,
