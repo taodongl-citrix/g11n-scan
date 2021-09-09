@@ -14836,22 +14836,16 @@ module.exports = { scan };
 /***/ }),
 
 /***/ 7830:
-/***/ ((module, __unused_webpack___webpack_exports__, __nccwpck_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-"use strict";
-/* harmony import */ var _slack_web_api__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(431);
-/* harmony import */ var _slack_web_api__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_slack_web_api__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(5747);
-/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(fs__WEBPACK_IMPORTED_MODULE_1__);
-/* module decorator */ module = __nccwpck_require__.hmd(module);
-
-
+const { WebClient, LogLevel } = __nccwpck_require__(431);
+const { createReadStream } = __nccwpck_require__ (5747);
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 
 async function uploadFile(token, channel, report) {
-  const client = new _slack_web_api__WEBPACK_IMPORTED_MODULE_0__.WebClient(token, {
-    logLevel: _slack_web_api__WEBPACK_IMPORTED_MODULE_0__.LogLevel.INFO
+  const client = new WebClient(token, {
+    logLevel: LogLevel.INFO
   });
   const number = github.context.payload.pull_request.number;
   const projectUrl = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/pull/${number}`
@@ -14861,7 +14855,7 @@ async function uploadFile(token, channel, report) {
         initial_comment: `PR: ${projectUrl} check failure, \nPlease see attachment`,
         filetype: 'html',
         filename: 'report.html',
-        file: (0,fs__WEBPACK_IMPORTED_MODULE_1__.createReadStream)(report)
+        file: createReadStream(report)
     });
     console.log(result);
   }
@@ -15057,8 +15051,8 @@ module.exports = require("zlib");
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			id: moduleId,
-/******/ 			loaded: false,
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
 /******/ 	
@@ -15071,84 +15065,21 @@ module.exports = require("zlib");
 /******/ 			if(threw) delete __webpack_module_cache__[moduleId];
 /******/ 		}
 /******/ 	
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-/******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__nccwpck_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__nccwpck_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__nccwpck_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/harmony module decorator */
-/******/ 	(() => {
-/******/ 		__nccwpck_require__.hmd = (module) => {
-/******/ 			module = Object.create(module);
-/******/ 			if (!module.children) module.children = [];
-/******/ 			Object.defineProperty(module, 'exports', {
-/******/ 				enumerable: true,
-/******/ 				set: () => {
-/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
-/******/ 				}
-/******/ 			});
-/******/ 			return module;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__nccwpck_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-"use strict";
-__nccwpck_require__.r(__webpack_exports__);
-/* harmony import */ var _slack__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(7830);
-/* harmony import */ var _radar__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(7186);
-/* harmony import */ var _radar__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_radar__WEBPACK_IMPORTED_MODULE_1__);
-
-
+const {uploadFile} = __nccwpck_require__(7830);
+const {scan} = __nccwpck_require__(7186);
 const core = __nccwpck_require__(2186);
 const path = __nccwpck_require__(5622);
 
@@ -15158,9 +15089,9 @@ async function run() {
   const accessToken = core.getInput('slack-access-token');
   const baseDir = path.join(__dirname, '..')
   console.log("channel is: " + channel);
-  const resp = await (0,_radar__WEBPACK_IMPORTED_MODULE_1__.scan)(baseDir, skipList);
+  const resp = await scan(baseDir, skipList);
   if (!resp.ok) {
-    await (0,_slack__WEBPACK_IMPORTED_MODULE_0__.uploadFile)(accessToken, channel, resp.reportFile);
+    await uploadFile(accessToken, channel, resp.reportFile);
     console.log('Contact Globalization team in https://citrix.slack.com/archives/CJKDCKS4B for more information');
     core.setFailed('g11n issues exist');
   }

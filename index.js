@@ -1,5 +1,5 @@
-import {uploadFile} from './slack';
-import {scan} from './radar';
+const {uploadFile} = require('./slack');
+const {scan} = require('./radar');
 const core = require("@actions/core");
 const path = require("path");
 

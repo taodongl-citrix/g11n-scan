@@ -1,5 +1,5 @@
-import { WebClient, LogLevel } from "@slack/web-api";
-import { createReadStream } from "fs";
+const { WebClient, LogLevel } = require("@slack/web-api");
+const { createReadStream } = require ("fs");
 const core = require("@actions/core");
 const github = require("@actions/github");
 
