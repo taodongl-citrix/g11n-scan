@@ -3,18 +3,18 @@ name: "g11n radar"
 description: "scan globalization issues in repo"
 
 inputs:
-  github-access-token:
-    description: 'github access-token'
-    required: true
-  slack-channel:
-    description: 'slack channel'
-    required: true
-  slack-access-token:
-    description: 'slack access token'
+  repoToken:
+    description: "github access token, use secrets.GITHUB_TOKEN"
     required: true
   skip:
     description: 'comma separated folders, like: abc/,xyz/,foo/'
     required: false
+  # slack-channel:
+  #   description: 'slack channel'
+  #   required: true
+  # slack-access-token:
+  #   description: 'slack access token'
+  #   required: true
 
 runs:
   using: "node12"
